@@ -11,14 +11,20 @@ import config
 
 class Problem(restful.Resource):
 
-    def connect_db(self, mongo_uri, mongo_db):
-        self.client = pymongo.MongoClient(mongo_uri)
-        self.db = self.client[mongo_db]
-
     def get(self, problem_id):
-        self.connect_db(config.MONGO_URI, config.MONGO_PROBLEMS_DATABASE)
-        problem_info = self.db['poj'].find({'problem_id': problem_id})
+        client = pymongo.MongoClient(config.MONGO_URI)
+        db = client[config.MONGO_PROBLEMS_DATABASE]
+        
+        problem_info = db['poj'].find_one({'problem_id': problem_id})
+        client.close()
+        if problem_info is None:
+            return{
+                'static': 404,
+                'message': 'not find'
+            }
+
         return {
+            'static': 200,
             'oj': 'POJ',
             'problem_id': problem_id,
             'title': problem_info['title'] if 'title' in problem_info else '',
@@ -27,7 +33,7 @@ class Problem(restful.Resource):
             'output': problem_info['output'] if 'output' in problem_info else '',
             'sample_input': problem_info['sample_input'] if 'sample_input' in problem_info else '',
             'sample_output': problem_info['sample_output'] if 'sample_output' in problem_info else '',
-            'time_limit': problem_info['time_limit'] if 'time_limit' in problem_info else '1000ms',
+            'time_limit': problem_info['time_limit'] if 'time_limit' in problem_info else '1000MS',
             'memory_limit': problem_info['memory_limit'] if 'memory_limit' in problem_info else '65535K'
         }
 
