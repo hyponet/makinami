@@ -1,17 +1,13 @@
-FROM ubuntu
+FROM python:2.7.9
 
 MAINTAINER Hypo i@ihypo.net
 
 # 复制文件
 RUN mkdir -p ~/makinami
-ADD app ~/makinami
-COPY config.py ~/makinami
-COPY manage.py ~/makinami
-COPY requirements.txt ~/makinami
+WORKDIR ~/makinami
+COPY . ~/makinami
 
 # 安装依赖
-RUN apt-get update
-RUN apt-get install -y python-pip
 RUN pip install -r requirements.txt
 
 CMD python ~/makinami/manage.py start
