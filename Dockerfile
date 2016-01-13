@@ -7,6 +7,7 @@ RUN mkdir -p ~/makinami
 ADD app ~/makinami
 COPY config.py ~/makinami
 COPY manage.py ~/makinami
+COPY requirements.txt ~/makinami
 
 # 安装依赖
 RUN apt-get update
