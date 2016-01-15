@@ -15,16 +15,16 @@ class Problem(restful.Resource):
         client = pymongo.MongoClient(config.MONGO_URI)
         db = client[config.MONGO_PROBLEMS_DATABASE]
         
-        problem_info = db['poj'].find_one({'problem_id': problem_id})
+        problem_info = db['problems'].find_one({'oj': 'poj', 'problem_id': str(problem_id)})
         client.close()
         if problem_info is None:
             return{
-                'static': 404,
-                'message': 'not find'
+                'status': 404,
+                'message': 'not found'
             }
 
         return {
-            'static': 200,
+            'status': 200,
             'oj': 'POJ',
             'problem_id': problem_id,
             'title': problem_info['title'] if 'title' in problem_info else '',
