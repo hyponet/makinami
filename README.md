@@ -46,10 +46,18 @@ method: GET
 URI: /<string:oj_code>/problem/<int:problem_id>
 method: POST
 ```
+
+### 获得运行结果
+
+```
+URI: /<string:oj_code>/run/<int:run_id>
+method: GET
+```
+
 ### 用户验证
 
 ```
-URI: /<string:oj_code>/user/<string:username>
+URI: /<string:oj_code>/user
 method: POST
 ```
 ## 其他
