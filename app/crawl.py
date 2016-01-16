@@ -17,7 +17,7 @@ class Crawler():
         self.crawler = CrawlerProcess(settings)
 
 
-class OriginOJCrawler(Crawler):
+class OJInitCrawler(Crawler):
 
     def _crawl(self, oj):
         self.crawler.crawl(
