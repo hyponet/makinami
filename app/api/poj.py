@@ -9,7 +9,7 @@ from flask.ext import restful
 from app import api
 import config
 
-class Problem(restful.Resource):
+class POJProblem(restful.Resource):
 
     def get(self, problem_id):
         client = pymongo.MongoClient(config.MONGO_URI)
@@ -37,4 +37,4 @@ class Problem(restful.Resource):
             'memory_limit': problem_info['memory_limit'] if 'memory_limit' in problem_info else '65535K'
         }
 
-api.add_resource(Problem, '/poj/problem/<int:problem_id>')
+api.add_resource(POJProblem, '/poj/problem/<int:problem_id>')
