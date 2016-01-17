@@ -25,7 +25,7 @@ class Problem(restful.Resource):
 
         return {
             'status': 200,
-            'oj': 'POJ',
+            'oj': 'poj',
             'problem_id': problem_id,
             'title': problem_info['title'] if 'title' in problem_info else '',
             'description': problem_info['description'] if 'description' in problem_info else '',
