@@ -70,6 +70,7 @@ method: POST
 + 在/app/illustrious/spiders添加对应的爬虫文件，实现：
   - init爬虫： 爬取所有的题目
   - problem爬虫： 根据 problemid 爬取单个题目
+  - submit爬虫： 提交代码并返回runid等信息
   - result爬虫： 根据 runid 爬取运行结果
   - user爬虫： 根据 username ， password 爬取用户信息
 
