@@ -13,7 +13,7 @@ class POJProblem(restful.Resource):
 
     def get(self, problem_id):
         client = pymongo.MongoClient(config.MONGO_URI)
-        db = client[config.MONGO_PROBLEMS_DATABASE]
+        db = client[config.MONGO_DATABASE]
         
         problem_info = db['problems'].find_one({'oj': 'poj', 'problem_id': str(problem_id)})
         client.close()
@@ -37,4 +37,19 @@ class POJProblem(restful.Resource):
             'memory_limit': problem_info['memory_limit'] if 'memory_limit' in problem_info else '65535K'
         }
 
+
+class POJStatus(restful.Resource):
+
+    def get(self, run_id):
+        pass
+
+
+class POJUsers(restful.Resource):
+
+    def post(self, username):
+        pass
+
+
 api.add_resource(POJProblem, '/poj/problem/<int:problem_id>')
+api.add_resource(POJStatus, '/poj/status/<int:run_id>')
+api.add_resource(POJUsers, '/poj/user/<string:username>')
