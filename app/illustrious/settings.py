@@ -8,13 +8,17 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
+import sys
+sys.path.append('../../') # 把项目根目录导入
+import config
+
 BOT_NAME = 'illustrious'
 
 SPIDER_MODULES = ['illustrious.spiders']
 NEWSPIDER_MODULE = 'illustrious.spiders'
 
-MONGO_URI = 'mongodb://localhost:27017/'
-MONGO_DATABASE = 'makinami'
+MONGO_URI = config.MONGO_URI 
+MONGO_DATABASE = config.MONGO_DATABASE 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'illustrious (+http://www.yourdomain.com)'
