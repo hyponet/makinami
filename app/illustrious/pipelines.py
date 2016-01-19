@@ -34,8 +34,38 @@ class MongoPipeline(object):
 
     def process_item(self, item, spider):
 
-        self.db['problems'].update({'oj': item['oj'],
-                'problem_id': item['problem_id']}, dict(item), upsert=True)
+        item_name = item.__class__.__name__
+
+        if item_name == 'ProblemItem':
+            self.db['problems'].update(
+                {
+                    'oj': item['oj'],
+                    'problem_id': item['problem_id']
+                },
+                dict(item),
+                upsert=True
+                )
+        
+        elif item_name == 'SolutionItem':
+            self.db['status'].update(
+                {
+                    'oj': item['oj'],
+                    'run_id': item['run_id']
+                },
+                dict(item),
+                upsert=True
+                )
+
+        elif item_name == 'AccountItem':
+            self.db['users'].update(
+                {
+                    'oj': item['oj'],
+                    'username': item['username']
+                },
+                dict(item),
+                upsert=True
+                )
+
         return item
 
 class JsonWriterPipeline(object):
