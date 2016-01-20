@@ -9,7 +9,7 @@
 #
 
 import sys
-sys.path.append('../../') # 把项目根目录导入
+sys.path.append('../') # 把项目根目录导入
 import config
 
 BOT_NAME = 'illustrious'
