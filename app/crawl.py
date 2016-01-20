@@ -35,12 +35,55 @@ class OJInitCrawler(Crawler):
         p.join()
 
 
+class ProblemCrawler(Crawler):
+
+    def _crawl(self, oj, problem_id):
+        self.crawler.crawl(
+                oj + '_problem',
+                problem_id=problem_id
+            )
+        self.crawler.start()
+        self.crawler.stop()
+
+    def crawl(self, oj, problem_id):
+        p = Process(
+            target=self._crawl,
+            args=[
+                oj,
+                problem_id
+            ]
+        )
+        p.start()
+        p.join()
+    
+
+class StatusCrawler(Crawler):
+
+    def _crawl(self, oj, run_id):
+        self.crawler.crawl(
+            oj + 'status',
+            run_id=run_id
+        )
+        self.crawler.start()
+        self.crawler.stop()
+
+    def crawl(self, oj, run_id):
+        p = Process(
+            target=self._crawl,
+            args=[
+                oj,
+                run_id
+            ]
+        )
+        p.start()
+        p.join()
+
+
 class CodeSubmitCrawler(Crawler):
 
     def _crawl(
             self,
             oj,
-            solution_id,
             problem_id,
             language,
             code,
@@ -49,7 +92,6 @@ class CodeSubmitCrawler(Crawler):
             password):
         self.crawler.crawl(
             oj + '_submit',
-            solution_id=solution_id,
             problem_id=problem_id,
             language=language,
             source=b64encode(code),
