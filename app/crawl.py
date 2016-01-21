@@ -2,11 +2,10 @@
 # coding=utf-8
 
 from billiard import Process
+from base64 import b64encode
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-
-from base64 import b64encode
 
 settings = get_project_settings()
 
@@ -61,7 +60,7 @@ class StatusCrawler(Crawler):
 
     def _crawl(self, oj, run_id):
         self.crawler.crawl(
-            oj + 'status',
+            oj + '_status',
             run_id=run_id
         )
         self.crawler.start()
