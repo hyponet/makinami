@@ -2,7 +2,6 @@
 # coding=utf-8
 
 from billiard import Process
-from base64 import b64encode
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -87,15 +86,13 @@ class CodeSubmitCrawler(Crawler):
             language,
             code,
             username,
-            nickname,
             password):
         self.crawler.crawl(
             oj + '_submit',
             problem_id=problem_id,
             language=language,
-            source=b64encode(code),
+            source=code,
             username=username,
-            nickname=nickname,
             password=password
         )
         self.crawler.start()
@@ -104,23 +101,19 @@ class CodeSubmitCrawler(Crawler):
     def crawl(
             self,
             oj,
-            solution_id,
             problem_id,
             language,
             code,
             username,
-            nickname,
             password):
         p = Process(
             target=self._crawl,
             args=[
                 oj,
-                solution_id,
                 problem_id,
                 language,
                 code,
                 username,
-                nickname,
                 password
             ]
         )
