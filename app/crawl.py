@@ -82,6 +82,7 @@ class CodeSubmitCrawler(Crawler):
     def _crawl(
             self,
             oj,
+            solution_id,
             problem_id,
             language,
             code,
@@ -89,6 +90,7 @@ class CodeSubmitCrawler(Crawler):
             password):
         self.crawler.crawl(
             oj + '_submit',
+            solution_id=solution_id,
             problem_id=problem_id,
             language=language,
             source=code,
@@ -101,6 +103,7 @@ class CodeSubmitCrawler(Crawler):
     def crawl(
             self,
             oj,
+            solution_id,
             problem_id,
             language,
             code,
@@ -110,6 +113,7 @@ class CodeSubmitCrawler(Crawler):
             target=self._crawl,
             args=[
                 oj,
+                solution_id,
                 problem_id,
                 language,
                 code,
