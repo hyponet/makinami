@@ -102,13 +102,12 @@ class POJStatus(restful.Resource):
 class POJUsers(restful.Resource):
 
     def post(self, username):
+        get_user = AccountCrawler()
+        get_user.crawl('poj', username, request.json['password'])
+
         client = pymongo.MongoClient(config.MONGO_URI)
         db = client[config.MONGO_DATABASE]
-        user_info = db['status'].find_one({'oj': 'poj', 'username': username})
-        if user_info is None:
-            get_user = AccountCrawler()
-            get_user.crawl('poj', username, request.json['password'])
-        user_info = db['status'].find_one({'oj': 'poj', 'username': username})
+        user_info = db['users'].find_one({'oj': 'poj', 'username': username})
         client.close()
 
         if user_info is None:
@@ -117,7 +116,15 @@ class POJUsers(restful.Resource):
                 'message': 'not found'
             }
 
-        return user_info
+        return {
+            'username': user_info['username'],
+            'status': 200,
+            'submit': user_info['submit'],
+            'oj': user_info['oj'],
+            'accept': user_info['accept'],
+            'rank': user_info['rank'],
+            'solved': dict(user_info['solved'])
+        }
 
 api.add_resource(POJProblem, '/poj/problem/<int:problem_id>')
 api.add_resource(POJStatus, '/poj/status/<int:run_id>')
