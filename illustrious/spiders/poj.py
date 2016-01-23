@@ -131,6 +131,7 @@ class PojSubmitSpider(CrawlSpider):
     is_login = False
 
     def __init__(self,
+                 solution_id='None',
                  problem_id='1000',
                  language='g++',
                  source=None,
@@ -138,6 +139,7 @@ class PojSubmitSpider(CrawlSpider):
                  password='sdutacm', *args, **kwargs):
         super(PojSubmitSpider, self).__init__(*args, **kwargs)
 
+        self.solution_id = solution_id
         self.username = username
         self.password = password
         self.problem_id = problem_id
@@ -195,6 +197,7 @@ class PojSubmitSpider(CrawlSpider):
         item['oj'] = 'poj'
         item['problem_id'] = self.problem_id
         item['language'] = self.language
+        item['solution_id'] = self.solution_id
 
         if self.is_login:
             for tr in sel.xpath('//table')[-1].xpath('.//tr')[1:]:
