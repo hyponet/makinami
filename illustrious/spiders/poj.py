@@ -243,6 +243,7 @@ class PojStatusSpider(Spider):
         item = SolutionItem()
         item['oj'] = 'poj'
         item['run_id'] = self.run_id
+        item['solution_id'] = self.solution_id
 
         for tr in sel.xpath('//table')[-1].xpath('.//tr')[1:]:
             runid = tr.xpath('.//td/text()').extract()[0]
