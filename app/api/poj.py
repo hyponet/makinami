@@ -46,9 +46,11 @@ class POJProblem(restful.Resource):
         }
 
     def post(self, problem_id):
+        solved_id = str(1)
         code_submit = CodeSubmitCrawler()
         code_submit.crawl(
             oj='poj',
+            solved_id=solved_id,
             problem_id=str(problem_id),
             language=request.json['language'],
             code=request.json['code'],
@@ -59,14 +61,26 @@ class POJProblem(restful.Resource):
         client = pymongo.MongoClient(config.MONGO_URI)
         db = client[config.MONGO_DATABASE]
         
-        problem_info = db['status'].find_one({'oj': 'poj', 'problem_id': str(problem_id)})
+        run_info = db['status'].find_one({'oj': 'poj', 'problem_id': str(problem_id), 'solved_id': solved_id})
         client.close()
 
-        if problem_info is None:
+        if run_info is None:
             return {
                 'status': 500,
                 'message': 'failed to submit'
             }
+
+        return {
+            'oj': 'poj',
+            'run_id': run_info['run_id'],
+            'problem_id': run_info['problem_id'],
+            'result': run_info['result'],
+            'memory': run_info['memory'] if 'memory' in run_info else '',
+            'time': run_info['time'] if 'time' in run_info else '',
+            'language': run_info['language'],
+            'code_length': run_info['code_length'],
+            'submit_time': run_info['submit_time']
+        }
 
 class POJStatus(restful.Resource):
 
@@ -74,14 +88,14 @@ class POJStatus(restful.Resource):
         client = pymongo.MongoClient(config.MONGO_URI)
         db = client[config.MONGO_DATABASE]
         
-        problem_info = db['status'].find_one({'oj': 'poj', 'run_id': str(run_id)})
-        if problem_info is None:
+        run_info = db['status'].find_one({'oj': 'poj', 'run_id': str(run_id)})
+        if run_info is None:
             get_status = StatusCrawler()
             get_status.crawl('poj', str(run_id))
-            problem_info = db['status'].find_one({'oj': 'poj', 'run_id': str(run_id)})
+            run_info = db['status'].find_one({'oj': 'poj', 'run_id': str(run_id)})
         client.close()
     
-        if problem_info is None:
+        if run_info is None:
             return {
                 'status': 404,
                 'message': 'not found'
@@ -90,13 +104,13 @@ class POJStatus(restful.Resource):
         return {
             'oj': 'poj',
             'run_id': str(run_id),
-            'problem_id': problem_info['problem_id'],
-            'result': problem_info['result'],
-            'memory': problem_info['memory'] if 'memory' in problem_info else '',
-            'time': problem_info['time'] if 'time' in problem_info else '',
-            'language': problem_info['language'],
-            'code_length': problem_info['code_length'],
-            'submit_time': problem_info['submit_time']
+            'problem_id': run_info['problem_id'],
+            'result': run_info['result'],
+            'memory': run_info['memory'] if 'memory' in run_info else '',
+            'time': run_info['time'] if 'time' in run_info else '',
+            'language': run_info['language'],
+            'code_length': run_info['code_length'],
+            'submit_time': run_info['submit_time']
         }
 
 class POJUsers(restful.Resource):
