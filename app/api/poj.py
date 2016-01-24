@@ -6,6 +6,8 @@
 import pymongo
 from flask import request
 from flask.ext import restful
+import hashlib
+from datetime import datetime
 
 from app import api
 from app.crawl import ProblemCrawler, StatusCrawler, CodeSubmitCrawler, AccountCrawler
@@ -46,7 +48,9 @@ class POJProblem(restful.Resource):
         }
 
     def post(self, problem_id):
-        solved_id = str(1)
+        md5 = hashlib.md5()
+        md5.update('poj' + request.json['username'] + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        solved_id = str(md5.hexdigest())
         code_submit = CodeSubmitCrawler()
         code_submit.crawl(
             oj='poj',
