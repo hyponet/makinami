@@ -31,7 +31,7 @@ python manage.py start
 
 ## API
 
-*oj_code参照上面OJ支持列表*
+*oj_code参照上面OJ支持列表，参数传递使用json格式*
 
 ### 获取题目
 
@@ -40,12 +40,18 @@ URI: /<string:oj_code>/problem/<int:problem_id>
 method: GET
 ```
 
-### 提交题目
+### 提交代码
 
 ```
 URI: /<string:oj_code>/problem/<int:problem_id>
 method: POST
 ```
+| 参数名   | 说明                                 |
+| -------- |:------------------------------------:|
+| username | 登录用户名                           |
+| password | 登录密码                             |
+| language | 语言类型（见OJ支持列表中的Language） |
+| code     | 提交的代码（需要已被base64加密）     |
 
 ### 获得运行结果
 
@@ -60,6 +66,9 @@ method: GET
 URI: /<string:oj_code>/user/<string:username>
 method: POST
 ```
+| 参数名   | 说明     |
+| -------- |:--------:|
+| password | 登录密码 |
 
 ## 快速参与开发
 
