@@ -86,6 +86,32 @@ class POJProblem(restful.Resource):
             'submit_time': run_info['submit_time']
         }
 
+
+class POJProblemList(restful.Resource):
+
+    def get(self):
+        client = pymongo.MongoClient(config.MONGO_URI)
+        db = client[config.MONGO_DATABASE]
+        
+        problems = db['problems'].find({'oj': 'poj'}, {'problem_id': 1, 'title': 1})
+        
+        problem_list = []
+        problem_num = 0;
+        for one in problems:
+            problem = {
+                'problem_id': one['problem_id'],
+                'title': one['title']
+            }
+            
+            problem_list.append(problem)
+            problem_num += 1
+
+        return {
+            'problem_num': problem_num,
+            'problem_list': problem_list
+        }
+
+
 class POJStatus(restful.Resource):
 
     def get(self, run_id):
@@ -145,5 +171,6 @@ class POJUsers(restful.Resource):
         }
 
 api.add_resource(POJProblem, '/poj/problem/<int:problem_id>')
+api.add_resource(POJProblemList, '/poj/problems')
 api.add_resource(POJStatus, '/poj/status/<int:run_id>')
 api.add_resource(POJUsers, '/poj/user/<string:username>')
