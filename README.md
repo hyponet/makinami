@@ -40,6 +40,13 @@ URI: /<string:oj_code>/problem/<int:problem_id>
 method: GET
 ```
 
+### 获得题目列表
+
+```
+URI /<string:oj_code>/problems
+method: GET
+```
+
 ### 提交代码
 
 ```
