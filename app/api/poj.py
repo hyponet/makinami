@@ -50,11 +50,11 @@ class POJProblem(restful.Resource):
     def post(self, problem_id):
         md5 = hashlib.md5()
         md5.update('poj' + request.json['username'] + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        solved_id = str(md5.hexdigest())
+        solution_id = str(md5.hexdigest())
         code_submit = CodeSubmitCrawler()
         code_submit.crawl(
             oj='poj',
-            solved_id=solved_id,
+            solution_id=solution_id,
             problem_id=str(problem_id),
             language=request.json['language'],
             code=request.json['code'],
@@ -65,7 +65,7 @@ class POJProblem(restful.Resource):
         client = pymongo.MongoClient(config.MONGO_URI)
         db = client[config.MONGO_DATABASE]
         
-        run_info = db['status'].find_one({'oj': 'poj', 'problem_id': str(problem_id), 'solved_id': solved_id})
+        run_info = db['status'].find_one({'oj': 'poj', 'problem_id': str(problem_id), 'solution_id': solution_id})
         client.close()
 
         if run_info is None:
