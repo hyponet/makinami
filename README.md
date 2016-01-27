@@ -1,6 +1,6 @@
 # Makinami
 
-Makinami是为VJ提供微服务的爬虫模块，采用RESTful设计，可以独立运行，也可以认为是一个独立完整的程序。既使得VJ主程序可以与爬虫模块分离，多地部署，也方便众OJ爱好者直接使用，不必再重复造轮子。
+Makinami是为VirtualJudge程序中的主要子系统 [Ayanami](https://github.com/Coderhypo/ayanami) 提供微服务的爬虫子系统，采用RESTful设计，可以独立运行，也可以认为是一个独立完整的程序。既使得VJ主程序可以与爬虫模块分离，多地部署，也方便众OJ爱好者直接使用，不必再重复造轮子。
 
 ## 技术栈
 
